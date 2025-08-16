@@ -1,0 +1,32 @@
+<form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="p-4" style="max-width: 400px; margin: auto;">
+  <h3 class="mb-4">Login form</h3>
+
+  <div class="mb-3">
+    <label for="email">Email:</label>
+    <input id="email" type="email" class="form-control" formControlName="email">
+    <div class="text-danger mt-1" *ngIf="email?.touched && email?.invalid">
+      <div *ngIf="email?.errors?.['required']">Email is required</div>
+      <div *ngIf="email?.errors?.['email']">Email is not correct</div>
+    </div>
+  </div>
+
+  <div class="mb-3">
+    <label for="password">Password:</label>
+    <input id="password" type="password" class="form-control" formControlName="password">
+    <div class="text-danger mt-1" *ngIf="password?.touched && password?.invalid">
+      <div *ngIf="password?.errors?.['required']">Password required</div>
+      <div *ngIf="password?.errors?.['minlength']">Minimum letters should be 6 letters</div>
+    </div>
+  </div>
+  <!-- mobile number -->
+  <div class="mb-3">
+    <label for="mobile">Mobile Number</label>
+    <input id="mobile" type="text" class="form-control" formControlName="mobile">
+    <div class="text-danger mt-1" *ngIf="mobile?.touched && mobile?.invalid">
+      <div *ngIf="mobile?.errors?.['required']">Mobile number required</div>
+      <div *ngIf="mobile?.errors?.['pattern']">Mobile number should be 11 digits</div>
+    </div>
+  </div>
+
+  <button type="submit" class="btn btn-primary w-100">Submit</button>
+</form>
