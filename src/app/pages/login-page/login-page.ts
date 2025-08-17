@@ -2,43 +2,83 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { MyService } from '../../my-service';
+import { Router } from '@angular/router';
+
+interface User {
+  id: '';
+  name: '';
+  email: '';
+  password: '';
+  mobile: '';
+}
 
 @Component({
   selector: 'app-login-page',
-  imports: [ReactiveFormsModule,CommonModule],
+  imports: [ReactiveFormsModule, CommonModule],
   templateUrl: './login-page.html',
-  styleUrl: './login-page.css'
+  styleUrl: './login-page.css',
 })
 export class LoginPage {
-loginForm: FormGroup;
+  loginForm: FormGroup;
+  user: User[] = [];
 
-constructor(private fb: FormBuilder){
-  this.loginForm = this.fb.group({
-    email: ['',[Validators.required,Validators.email]],
-    password: ['',[Validators.required,Validators.minLength(6)]],
-    mobile: ['', [Validators.required,Validators.pattern(/^09\d{9}$/) 
-]]
-  })
-}
-
-get email(){
-  return this.loginForm.get("email")
-}
-get password(){
-  return this.loginForm.get("password")
-}
-get mobile(){
-  return this.loginForm.get("mobile")
-}
-
-onSubmit(){
-  if (this.loginForm.valid) {
-    console.log(this.loginForm.value);
-    this.loginForm.reset();
+  ngOnInit() {
+    this.myService.getData().subscribe({
+      next: (response) => {
+        this.user = response;
+        console.log('Data recieved: ', response);
+      },
+      error: (error) => {
+        console.error('Error fetching data: ', error);
+      },
+    });
   }
-  else{
-    console.log("is not validated");
-    this.loginForm.markAllAsTouched();
+
+  constructor(private fb: FormBuilder, private myService: MyService, private router: Router) {
+    this.loginForm = this.fb.group({
+      name: ['', [Validators.required]],
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required, Validators.minLength(6)]],
+      mobile: ['', [Validators.required, Validators.pattern(/^09\d{9}$/)]],
+    });
   }
-}
+  get name() {
+    return this.loginForm.get('name');
+  }
+  get email() {
+    return this.loginForm.get('email');
+  }
+  get password() {
+    return this.loginForm.get('password');
+  }
+  get mobile() {
+    return this.loginForm.get('mobile');
+  }
+
+  onSubmit() {
+    console.log(this.loginForm);
+
+    if (this.loginForm.valid) {
+      const maxId =
+        this.user && this.user.length > 0 ? Math.max(...this.user.map((u) => +u.id)) : -1;
+
+      const newId = (maxId + 1).toString();
+      const formValue = { id: newId, ...this.loginForm.value };
+
+      this.myService.postData(formValue).subscribe({
+        next: (response) => {
+          console.log('Login data: ', response);
+          this.loginForm.reset();
+          this.router.navigate(['/about']);
+        },
+        error: (err) => {
+          console.error('Error adding item:', err);
+        },
+      });
+    } else {
+      console.log('is not validated');
+      this.loginForm.markAllAsTouched();
+    }
+  }
 }

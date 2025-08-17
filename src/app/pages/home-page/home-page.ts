@@ -1,11 +1,10 @@
 import { NgFor, NgIf } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
 import { MyService } from '../../my-service';
-import { HttpClientModule } from '@angular/common/http';
 
 @Component({
   selector: 'app-home-page',
-  imports: [NgFor, NgIf, HttpClientModule],
+  imports: [NgFor, NgIf],
   templateUrl: './home-page.html',
   styleUrl: './home-page.css',
 })
