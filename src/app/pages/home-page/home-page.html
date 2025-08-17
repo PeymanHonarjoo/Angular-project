@@ -1,1 +1,8 @@
 <p>home-page works!</p>
+<div *ngIf="data">
+  <h3>Data:</h3>
+  <p><strong>User ID:</strong> {{ data.userId }}</p>
+  <p><strong>ID:</strong> {{ data.id }}</p>
+  <p><strong>Title:</strong> {{ data.title }}</p>
+  <p><strong>Completed:</strong> {{ data.completed }}</p>
+</div>
