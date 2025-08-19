@@ -1,4 +1,4 @@
-import { HttpClient, HttpRequest } from '@angular/common/http';
+import { HttpClient, HttpRequest, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
@@ -6,17 +6,32 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class MyService {
-  private apiUrl = 'http://localhost:3000/posts'; // Replace with your actual API URL
+  private apiUrl = 'http://192.168.180.181:1234';
 
   constructor(private http: HttpClient) {}
 
-  getData(): Observable<any> {
-    return this.http.get<any>(this.apiUrl);
+  private getToken() {
+    const token = sessionStorage.getItem('token');
+    console.log(token);
+
+    return token;
+  }
+  private getHeader(): HttpHeaders {
+    let headers = new HttpHeaders();
+
+    headers = headers.set('Authorization', `Bearer ${this.getToken()}`);
+    console.log(headers);
+
+    return headers;
+  }
+
+  getData(url: string): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/${url}`, { headers: this.getHeader() });
   }
   removeData(url: string) {
-    return this.http.delete<any>(`${this.apiUrl}/${url}`);
+    return this.http.delete<any>(`${this.apiUrl}/${url}`, { headers: this.getHeader() });
   }
-  postData(newItem: any) {
-    return this.http.post(this.apiUrl, newItem);
+  postData(url: string, newItem: any) {
+    return this.http.post(`${this.apiUrl}/${url}`, newItem, { headers: this.getHeader() });
   }
 }

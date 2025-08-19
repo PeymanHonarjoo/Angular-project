@@ -7,19 +7,10 @@
   <h3 class="mb-4">Login form</h3>
 
   <div class="mb-3">
-    <label for="name">Name:</label>
-    <input id="name" type="text" class="form-control" formControlName="name" />
-    <div class="text-danger mt-1" *ngIf="name?.touched && name?.invalid">
-      <div *ngIf="name?.errors?.['required']">Name is required</div>
-    </div>
-  </div>
-
-  <div class="mb-3">
-    <label for="email">Email:</label>
-    <input id="email" type="email" class="form-control" formControlName="email" />
-    <div class="text-danger mt-1" *ngIf="email?.touched && email?.invalid">
-      <div *ngIf="email?.errors?.['required']">Email is required</div>
-      <div *ngIf="email?.errors?.['email']">Email is not correct</div>
+    <label for="username">Username:</label>
+    <input id="username" type="text" class="form-control" formControlName="username" />
+    <div class="text-danger mt-1" *ngIf="username?.touched && username?.invalid">
+      <div *ngIf="username?.errors?.['required']">Name is required</div>
     </div>
   </div>
 
@@ -29,15 +20,6 @@
     <div class="text-danger mt-1" *ngIf="password?.touched && password?.invalid">
       <div *ngIf="password?.errors?.['required']">Password required</div>
       <div *ngIf="password?.errors?.['minlength']">Minimum letters should be 6 letters</div>
-    </div>
-  </div>
-  <!-- mobile number -->
-  <div class="mb-3">
-    <label for="mobile">Mobile Number</label>
-    <input id="mobile" type="text" class="form-control" formControlName="mobile" />
-    <div class="text-danger mt-1" *ngIf="mobile?.touched && mobile?.invalid">
-      <div *ngIf="mobile?.errors?.['required']">Mobile number required</div>
-      <div *ngIf="mobile?.errors?.['pattern']">Mobile number should be 11 digits</div>
     </div>
   </div>
 

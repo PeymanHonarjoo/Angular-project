@@ -2,15 +2,11 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { MyService } from '../../my-service';
-import { Router } from '@angular/router';
+import { Authentication } from '../../authentication';
 
 interface User {
-  id: '';
-  name: '';
-  email: '';
+  username: '';
   password: '';
-  mobile: '';
 }
 
 @Component({
@@ -23,56 +19,49 @@ export class LoginPage {
   loginForm: FormGroup;
   user: User[] = [];
 
-  ngOnInit() {
-    this.myService.getData().subscribe({
-      next: (response) => {
-        this.user = response;
-        console.log('Data recieved: ', response);
-      },
-      error: (error) => {
-        console.error('Error fetching data: ', error);
-      },
+  // ngOnInit() {
+  //   this.authServise.getData().subscribe({
+  //     next: (response) => {
+  //       this.user = response;
+  //       console.log('Data recieved: ', response);
+  //     },
+  //     error: (error) => {
+  //       console.error('Error fetching data: ', error);
+  //     },
+  //   });
+  // }
+  name = '';
+  constructor(private fb: FormBuilder, private authServise: Authentication) {
+    this.loginForm = this.fb.group({
+      username: ['', [Validators.required]],
+      password: ['', [Validators.required, Validators.minLength(6)]],
     });
+  }
+  get username() {
+    return this.loginForm.get('username');
   }
 
-  constructor(private fb: FormBuilder, private myService: MyService, private router: Router) {
-    this.loginForm = this.fb.group({
-      name: ['', [Validators.required]],
-      email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(6)]],
-      mobile: ['', [Validators.required, Validators.pattern(/^09\d{9}$/)]],
-    });
-  }
-  get name() {
-    return this.loginForm.get('name');
-  }
-  get email() {
-    return this.loginForm.get('email');
-  }
   get password() {
     return this.loginForm.get('password');
-  }
-  get mobile() {
-    return this.loginForm.get('mobile');
   }
 
   onSubmit() {
     console.log(this.loginForm);
 
     if (this.loginForm.valid) {
-      const maxId =
-        this.user && this.user.length > 0 ? Math.max(...this.user.map((u) => +u.id)) : -1;
+      this.authServise.login(this.loginForm.value).subscribe({
+        next: (response: any) => {
+          if (!response.hasError) {
+            this.name = response.result.username;
+            console.log('username: ', this.name);
 
-      const newId = (maxId + 1).toString();
-      const formValue = { id: newId, ...this.loginForm.value };
-
-      this.myService.postData(formValue).subscribe({
-        next: (response) => {
+            sessionStorage.setItem('token', response.result.token);
+          }
           console.log('Login data: ', response);
+          response;
           this.loginForm.reset();
-          this.router.navigate(['/about']);
         },
-        error: (err) => {
+        error: (err: any) => {
           console.error('Error adding item:', err);
         },
       });

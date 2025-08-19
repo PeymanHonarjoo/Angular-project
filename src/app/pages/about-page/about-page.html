@@ -1,12 +1,34 @@
-<div *ngIf="cardData" class="d-flex flex-row container">
-  <div class="card mx-2" style="width: 18rem" *ngFor="let item of cardData">
-    <div class="card-body">
-      <h5 class="card-title">{{ item.name }}</h5>
-      <h6 class="card-subtitle mb-2 text-body-secondary">{{ item.mobile }}</h6>
-      <p class="card-text">Email: {{ item.email }}</p>
-      <p class="card-text">Password: {{ item.password }}</p>
-      <button class="btn btn-primary me-2">Edit</button>
-      <button class="btn btn-danger" (click)="removeItem(item.id)">Remove</button>
+<div *ngIf="data" class="d-flex flex-row container">
+  <app-card [cardData]="data" (idRemoved)="openModal($event)"> </app-card>
+  <!-- modal -->
+  <ng-template #removeUserModal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-title">Profile deletion</h4>
+      <button
+        type="button"
+        class="btn-close"
+        aria-describedby="modal-title"
+        (click)="modalRef.dismiss('Cross click')"
+      ></button>
     </div>
-  </div>
+    <div class="modal-body">
+      <p>
+        <strong>Are you sure you want to delete profile?</strong>
+      </p>
+      <p>
+        All information associated to this user profile will be permanently deleted.
+        <span class="text-danger">This operation can not be undone.</span>
+      </p>
+    </div>
+    <div class="modal-footer">
+      <button
+        type="button"
+        class="btn btn-outline-secondary"
+        (click)="modalRef.dismiss('cancel click')"
+      >
+        Cancel
+      </button>
+      <button type="button" class="btn btn-danger" (click)="handleIdFromCard()">Ok</button>
+    </div>
+  </ng-template>
 </div>
