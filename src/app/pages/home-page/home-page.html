@@ -1,7 +1,29 @@
-<p>home-page works!</p>
-<div *ngIf="data">
-  <h3>Data:</h3>
-  <p><strong>ID:</strong> {{ data.id }}</p>
-  <p><strong>Title:</strong> {{ data.title }}</p>
-  <p><strong>date:</strong> {{ data.data }}</p>
+<div class="container">
+  <div class="card mx-2 p-3">
+    <h3 class="card-title p-3">Datas</h3>
+    <div class="card-text">
+      <div class="container">
+        <div class="row" *ngFor="let item of data">
+          <div class="col">
+            <p class="">
+              <span class="fw-medium">Id:</span>
+              {{ item.id }}
+            </p>
+          </div>
+          <div class="col">
+            <p>
+              <span class="fw-medium">Title: </span>
+              <span class="">{{ item.username }}</span>
+            </p>
+          </div>
+          <div class="col">
+            <p>
+              <span class="fw-medium">Name:</span>
+              {{ item.f_name }}
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

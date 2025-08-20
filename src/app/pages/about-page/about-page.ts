@@ -4,6 +4,7 @@ import { NgFor, NgIf } from '@angular/common';
 import { Card } from '../../component/card/card';
 import { LoginData } from '../../models/loginInterface';
 import { NgbModal, NgbModalModule, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-about-page',
@@ -18,13 +19,21 @@ export class AboutPage {
   data: LoginData[] = [];
   id = '';
   modalRef: any;
-  constructor(private myService: MyService, private modalService: NgbModal) {}
+  constructor(
+    private myService: MyService,
+    private modalService: NgbModal,
+    private toastr: ToastrService
+  ) {}
 
   ngOnInit() {
     this.myService.getData('users').subscribe({
       next: (response) => {
         this.data = response;
         console.log('Data recieved: ', response);
+        if (response.hasError) {
+          const errorMessage = response.messages;
+          this.toastr.error(errorMessage);
+        }
       },
       error: (error) => {
         console.error('Error fetching data: ', error);

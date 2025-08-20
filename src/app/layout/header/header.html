@@ -1,21 +1,21 @@
-<header>
-  <div class="nav-container">
-    <ul class="nav-item-bar">
-      <li class="nav-item">
-        <a routerLink="/">Home</a>
-      </li>
-      <li class="nav-item">
-        <a routerLink="/about">About</a>
-      </li>
-      <li class="nav-item">
-        <a routerLink="/form">Form</a>
-      </li>
-      <li class="nav-item">
-        <a routerLink="/contact">Contact</a>
-      </li>
-      <li class="nav-item">
-        <a routerLink="/login">Login</a>
-      </li>
-    </ul>
-  </div>
+<header class="navbar bg-dark border-bottom border-body" data-bs-theme="dark">
+  <!-- <div class="nav-container"> -->
+  <ul class="nav-item-bar">
+    <li class="nav-item">
+      <a routerLink="/" class="nav-link active text-white">Home</a>
+    </li>
+    <li class="nav-item">
+      <a routerLink="/about" class="nav-link text-white">About</a>
+    </li>
+    <li class="nav-item">
+      <a routerLink="/contact" class="nav-link text-white">Contact</a>
+    </li>
+  </ul>
+  <a *ngIf="!isUserLoggedIn" routerLink="/login" class="nav-link text-white btn mx-5"
+    >Login <i class="bi bi-box-arrow-in-right"></i>
+  </a>
+  <a (click)="logOut()" *ngIf="isUserLoggedIn" class="nav-link text-white btn mx-5"
+    >Logout <i class="bi bi-box-arrow-in-left"></i>
+  </a>
+  <!-- </div> -->
 </header>

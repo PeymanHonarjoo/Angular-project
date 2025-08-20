@@ -11,4 +11,7 @@ export class Authentication {
   login(user: { username: string; password: string }) {
     return this.http.post(this.apiUrl, user);
   }
+  isLoggedIn(): boolean {
+    return !!sessionStorage.getItem('token');
+  }
 }

@@ -2,7 +2,8 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { Authentication } from '../../authentication';
+import { Authentication } from '../../auth-service';
+import { Router } from '@angular/router';
 
 interface User {
   username: '';
@@ -31,7 +32,11 @@ export class LoginPage {
   //   });
   // }
   name = '';
-  constructor(private fb: FormBuilder, private authServise: Authentication) {
+  constructor(
+    private fb: FormBuilder,
+    private authServise: Authentication,
+    private router: Router
+  ) {
     this.loginForm = this.fb.group({
       username: ['', [Validators.required]],
       password: ['', [Validators.required, Validators.minLength(6)]],
@@ -56,6 +61,7 @@ export class LoginPage {
             console.log('username: ', this.name);
 
             sessionStorage.setItem('token', response.result.token);
+            this.router.navigate(['/']);
           }
           console.log('Login data: ', response);
           response;

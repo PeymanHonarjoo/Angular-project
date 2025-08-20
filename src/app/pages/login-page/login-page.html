@@ -1,27 +1,38 @@
-<form
-  [formGroup]="loginForm"
-  (ngSubmit)="onSubmit()"
-  class="p-4"
-  style="max-width: 400px; margin: auto"
->
-  <h3 class="mb-4">Login form</h3>
+<div class="login-wrapper">
+  <form
+    [formGroup]="loginForm"
+    form
+    (ngSubmit)="onSubmit()"
+    class="card border-dark rounded-5 p-4"
+    style="width: 100%; max-width: 500px"
+  >
+    <div class="card-body">
+      <h3 class="card-title text-center mb-4 p-2">Login form</h3>
+      <div class="card-text">
+        <div class="input-group p-2">
+          <label for="username" class="input-group-text">Username</label>
+          <input id="username" type="text" class="form-control" formControlName="username" />
+        </div>
+        <div
+          class="text-danger d-flex justify-content-start mx-2"
+          *ngIf="username?.touched && username?.invalid"
+        >
+          <div *ngIf="username?.errors?.['required']">Name is required</div>
+        </div>
 
-  <div class="mb-3">
-    <label for="username">Username:</label>
-    <input id="username" type="text" class="form-control" formControlName="username" />
-    <div class="text-danger mt-1" *ngIf="username?.touched && username?.invalid">
-      <div *ngIf="username?.errors?.['required']">Name is required</div>
+        <div class="p-2 input-group">
+          <label for="password" class="input-group-text">Password</label>
+          <input id="password" type="password" class="form-control" formControlName="password" />
+        </div>
+        <div
+          class="text-danger d-flex justify-content-start mx-2"
+          *ngIf="password?.touched && password?.invalid"
+        >
+          <div *ngIf="password?.errors?.['required']">Password required</div>
+          <div *ngIf="password?.errors?.['minlength']">Minimum letters should be 6 letters</div>
+        </div>
+      </div>
+      <button type="submit" class="btn btn-dark w-100 my-4 p-2">Submit</button>
     </div>
-  </div>
-
-  <div class="mb-3">
-    <label for="password">Password:</label>
-    <input id="password" type="password" class="form-control" formControlName="password" />
-    <div class="text-danger mt-1" *ngIf="password?.touched && password?.invalid">
-      <div *ngIf="password?.errors?.['required']">Password required</div>
-      <div *ngIf="password?.errors?.['minlength']">Minimum letters should be 6 letters</div>
-    </div>
-  </div>
-
-  <button type="submit" class="btn btn-primary w-100">Submit</button>
-</form>
+  </form>
+</div>
